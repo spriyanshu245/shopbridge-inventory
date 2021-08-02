@@ -1,6 +1,6 @@
 import firebase from "../firebase";
 
-const db = firebase.collection("/tutorials");
+const db = firebase.collection("/products");
 
 const getAll = () => {
   return db;

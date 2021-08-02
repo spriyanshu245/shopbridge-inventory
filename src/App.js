@@ -1,36 +1,50 @@
-import React from "react";
-import { Switch, Route, Link } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-
+import React, { useState } from "react";
+import { Modal, Button } from "react-bootstrap";
+import { Switch, Route } from "react-router-dom";
 import AddProduct from "./components/AddProduct";
 import ProductList from "./components/ProductList";
+import Product from "./components/ProductList";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <a href="/products" className="navbar-brand">
-          ShopBridge Inventory
+        <a href="/" className="navbar-brand">
+          ShopBridge
         </a>
-        <div className="navbar-nav mr-auto">
-          <li className="nav-item">
-            <Link to={"/products"} className="nav-link">
-              Inventory
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to={"/add"} className="nav-link">
-              Add Product
-            </Link>
-          </li>
-        </div>
       </nav>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>ADD PRODUCT</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <AddProduct />
+        </Modal.Body>
+        <Modal.Footer></Modal.Footer>
+      </Modal>
 
-      <div className="container mt-3">
-        <h2>ShopBridge</h2>
+      <div className="container mt-3" align="center">
+        <div class="row">
+          <div class="col-sm">
+            <h4>Product Inventory</h4>
+          </div>
+          <div class="col-sm">
+            <Button variant="secondary" onClick={handleShow}>
+              Add Product
+            </Button>
+          </div>
+        </div>
+        <br/>
+        <br/>
         <Switch>
-          <Route exact path={["/", "/products"]} component={ProductList} />
-          <Route exact path="/add" component={AddProduct} />
+          <Route exact path={["/"]} component={ProductList} />
+          <Route exact path="/products" component={Product} />
         </Switch>
       </div>
     </div>
