@@ -7,36 +7,42 @@ const AddProduct = () => {
         title: "",
         description: "",
         price: "",
-        // imgUrl : "",
+        imgUrl : "",
         inStock: true
     };
-    const [product, setProduct] = useState(initialProductState);
-    // const [url, setURL] = useState("ImgUpload");
+    const [product, setProduct] = useState(initialProductState);  
+    const [url, setURL] = useState("");
 
   const handleInputChange = event => {
     const { name, value } = event.target;
     setProduct({...product, [name]: value });
   };
 
+  async function handleCallback(imgUrl){
+    await setURL(imgUrl);
+    console.log('Add Product url is set ', url);
+  }
+
   const saveProduct = () => {
     var data = {
       title: product.title,
       description: product.description,
       price: product.price,
-      // imgUrl : product.imgUrl,
+      imgUrl : url,
       inStock: true
     };
-
+    console.log('image url', data.imgUrl)
     FetchProduct.create(data)
-      .then(() => {
-        setProduct(initialProductState);
-      })
-      .then(() => {
-        alert('Product Added to Inventory !')
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    .then(() => {
+      setProduct(initialProductState);
+    })
+    .then(() => {
+      alert('Product Added to Inventory !')
+    })
+    .catch(e => {
+      console.log(e);
+    });
+    console.log('json data', JSON.stringify(data))
   }
 
   return (
@@ -82,7 +88,7 @@ const AddProduct = () => {
               />
             </div>
             <div className="form-group">
-              <ImgUpload />
+              <ImgUpload handleUrl={handleCallback}/>
             </div>
             <button onClick={saveProduct} className="btn btn-success">
               Add

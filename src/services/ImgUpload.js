@@ -6,15 +6,13 @@ const ImgUpload = (props) => {
   const [url, setURL] = useState("");
 
   function handleChange(e) {
-    console.log('choose file')
     setFile(e.target.files[0]);
   }
 
-  function handleUpload(e) {
-    console.log('upload worked')
+  async function handleUpload(e) {
     e.preventDefault();
     const ref = storage.ref(`/images/${file.name}`);
-    const uploadTask = ref.put(file);
+    const uploadTask =  ref.put(file);
     uploadTask.on("state_changed", console.log, console.error, () => {
       ref
         .getDownloadURL()
@@ -23,10 +21,9 @@ const ImgUpload = (props) => {
           setURL(url);
         });
     });
-    console.log(url)
-    return url;
+    props.handleUrl(url);
+    return url
   }
-  props.url =url
 
     return (
       <div>
@@ -45,6 +42,5 @@ const ImgUpload = (props) => {
       </div>
 
       );
-
 }
 export default ImgUpload;
