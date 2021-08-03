@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from 'react-bootstrap';
 import { useCollection } from "react-firebase-hooks/firestore";
 import FetchProduct from "../services/FetchProduct";
 import Product from "./Product";
@@ -6,13 +7,12 @@ import Product from "./Product";
 const ProductsList = () => {
   const [currentProduct, setCurrentProduct] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [products, error] = useCollection(FetchProduct.getAll().orderBy("title", "asc"));
+  const [products] = useCollection(FetchProduct.getAll().orderBy("title", "asc"));
 
   const refreshList = () => {
     setCurrentProduct(null);
     setCurrentIndex(-1);
   };
-  console.log('new console log');
 
   const setActiveProduct = (product, index) => {
     const { title, description, price, inStock } = product.data();
@@ -42,8 +42,6 @@ const ProductsList = () => {
     <div className="list">
     <div className="col-md-6">
       <ul className="list-group">
-      {error && <strong>Error: {error}</strong>}
-      {console.log('products list', products)}
         { products ?
           products.docs.map((product, index) =>(
             <li 
@@ -51,8 +49,17 @@ const ProductsList = () => {
             onClick={() => setActiveProduct(product, index)}
             key={product.id}
             >
-              { product.data().title }
-              { product.data().price }
+              <div horizontal class="d-flex justify-content-between mb-3">
+                <div style = {{width: 200, flexShrink: 0}}>{ product.data().title }</div>
+                <div> ₹ { product.data().price }</div>
+                <div>
+                <Button variant="danger"
+                    onClick={() => deleteProduct(product.id)}>
+                    Delete
+                </Button>
+                </div>
+              </div>
+                
             </li>
           )):<p>Loading...</p>
         }
@@ -71,5 +78,4 @@ const ProductsList = () => {
   </div>
   );
 };
-
 export default ProductsList;

@@ -1,16 +1,19 @@
 import React, { useState } from "react";
 import FetchProduct from "../services/FetchProduct";
+import ImgUpload from "../services/ImgUpload";
 
 const AddProduct = () => {
     const initialProductState = {
         title: "",
         description: "",
         price: "",
+        // imgUrl : "",
         inStock: true
     };
     const [product, setProduct] = useState(initialProductState);
+    // const [url, setURL] = useState("ImgUpload");
 
-    const handleInputChange = event => {
+  const handleInputChange = event => {
     const { name, value } = event.target;
     setProduct({...product, [name]: value });
   };
@@ -20,6 +23,7 @@ const AddProduct = () => {
       title: product.title,
       description: product.description,
       price: product.price,
+      // imgUrl : product.imgUrl,
       inStock: true
     };
 
@@ -33,12 +37,12 @@ const AddProduct = () => {
       .catch(e => {
         console.log(e);
       });
-  };
+  }
 
   return (
     <div
       className="d-flex align-items-center justify-content-center"
-      style={{ height: "30vh" }}>
+      style={{ height: "40vh" }}>
       <div className="submit-form">
             <div className="form-group">
               <label htmlFor="title">Product Name</label>
@@ -77,7 +81,9 @@ const AddProduct = () => {
                 name="price"
               />
             </div>
-            <br/>
+            <div className="form-group">
+              <ImgUpload />
+            </div>
             <button onClick={saveProduct} className="btn btn-success">
               Add
             </button>

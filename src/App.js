@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button } from "react-bootstrap";
 import { Switch, Route } from "react-router-dom";
 import AddProduct from "./components/AddProduct";
 import ProductList from "./components/ProductList";
 import Product from "./components/ProductList";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [show, setShow] = useState(false);
@@ -31,17 +31,17 @@ function App() {
 
       <div className="container mt-3" align="center">
         <div class="row">
-          <div class="col-sm">
+          <div class="col">
             <h4>Product Inventory</h4>
           </div>
-          <div class="col-sm">
+          <div class="col">
             <Button variant="secondary" onClick={handleShow}>
               Add Product
             </Button>
           </div>
         </div>
         <br/>
-        <br/>
+
         <Switch>
           <Route exact path={["/"]} component={ProductList} />
           <Route exact path="/products" component={Product} />
@@ -50,5 +50,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

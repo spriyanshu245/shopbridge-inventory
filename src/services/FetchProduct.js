@@ -1,6 +1,5 @@
-import firebase from "../firebase";
-
-const db = firebase.collection("/products");
+import { firestore } from "../firebase";
+const db = firestore.collection("/products");
 
 const getAll = () => {
   return db;

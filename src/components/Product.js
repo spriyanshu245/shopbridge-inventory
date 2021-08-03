@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Card, Alert, Badge } from 'react-bootstrap';
 import FetchProduct from "../services/FetchProduct";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const Product = (props) => {
   const initialProductState = {
@@ -36,7 +36,8 @@ const Product = (props) => {
   return (
     <div>
       {currentProduct ? (
-        <div className="edit-form">
+        <div className="container" align="left">
+          <br/>
           <h4>Details</h4>
           <Card style={{ width: "18rem" }}>
             <Card.Img variant="top" src="https://images.app.goo.gl/xHWoMjkM8hauyYPD8" />
@@ -67,7 +68,7 @@ const Product = (props) => {
                   In Stock
                 </Button>
               )}
-              {message && show== true ? <Alert variant="success" onClose={() => setShow(false)} dismissible>{message}</Alert> : null}
+              {message && show ? <Alert variant="success" onClose={() => setShow(false)} dismissible>{message}</Alert> : null}
             </Card.Body>
           </Card>
         </div>
@@ -80,5 +81,4 @@ const Product = (props) => {
     </div>
   );
 };
-
 export default Product;
