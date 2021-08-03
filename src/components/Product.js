@@ -42,7 +42,7 @@ const Product = (props) => {
           <br/>
           <h4>Details</h4>
           <Card style={{ width: "18rem" }}>
-            <Card.Img variant="top" src= {currentProduct.imgUrl} />
+            <Card.Img variant="top" style= {{height: 200, wdth: 200}}src= {currentProduct.imgUrl} />
             {console.log('fetched image', currentProduct.imgUrl)}
             <Card.Body>
               <Card.Title>{currentProduct.title}</Card.Title>

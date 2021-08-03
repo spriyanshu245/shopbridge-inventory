@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import FetchProduct from "../services/FetchProduct";
-import ImgUpload from "../services/ImgUpload";
+import {storage} from "../firebase"
 
 const AddProduct = () => {
     const initialProductState = {
@@ -11,17 +11,32 @@ const AddProduct = () => {
         inStock: true
     };
     const [product, setProduct] = useState(initialProductState);  
+    const [file, setFile] = useState(null);
     const [url, setURL] = useState("");
+  
+    function handleChange(e) {
+      setFile(e.target.files[0]);
+    }
+  
+    async function handleUpload(e) {
+      e.preventDefault();
+      const ref = storage.ref(`/images/${file.name}`);
+      const uploadTask =  ref.put(file);
+      uploadTask.on("state_changed", console.log, console.error, () => {
+        ref
+          .getDownloadURL()
+          .then((url) => {
+            setFile(null);
+            setURL(url);
+          });
+      });
+      return url
+    }
 
   const handleInputChange = event => {
     const { name, value } = event.target;
     setProduct({...product, [name]: value });
   };
-
-  async function handleCallback(imgUrl){
-    await setURL(imgUrl);
-    console.log('Add Product url is set ', url);
-  }
 
   const saveProduct = () => {
     var data = {
@@ -88,9 +103,20 @@ const AddProduct = () => {
               />
             </div>
             <div className="form-group">
-              <ImgUpload handleUrl={handleCallback}/>
+              <form onSubmit={handleUpload}>
+                <img style= {{height: 40, wdth: 40}} src={url} alt="" />
+                <input
+                  className="form-control"
+                  id="image"
+                  required
+                  type="file"
+                  onChange={handleChange}
+                  name="image"
+                  />
+                  <button disabled={!file}>Upload</button>
+                </form>
             </div>
-            <button onClick={saveProduct} className="btn btn-success">
+            <button disable={!product} onClick={saveProduct} className="btn btn-success">
               Add
             </button>
       </div>
