@@ -9,6 +9,7 @@ const Product = (props) => {
     title: "",
     description: "",
     price: "",
+    imgUrl: "",
     inStock: true,
   };
   const [currentProduct, setCurrentProduct] = useState(initialProductState);
@@ -18,6 +19,7 @@ const Product = (props) => {
   const { product } = props;
   if (currentProduct.id !== product.id) {
     setCurrentProduct(product);
+    console.log('product page', JSON.stringify(currentProduct));
     setMessage("");
   }
 
@@ -40,7 +42,8 @@ const Product = (props) => {
           <br/>
           <h4>Details</h4>
           <Card style={{ width: "18rem" }}>
-            <Card.Img variant="top" src="https://images.app.goo.gl/xHWoMjkM8hauyYPD8" />
+            <Card.Img variant="top" style= {{height: 200, wdth: 200}}src= {currentProduct.imgUrl} />
+            {console.log('fetched image', currentProduct.imgUrl)}
             <Card.Body>
               <Card.Title>{currentProduct.title}</Card.Title>
               <Card.Subtitle className="mb-2 text-muted"> ₹ {currentProduct.price}</Card.Subtitle>

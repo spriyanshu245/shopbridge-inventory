@@ -1,17 +1,37 @@
 import React, { useState } from "react";
 import FetchProduct from "../services/FetchProduct";
-import ImgUpload from "../services/ImgUpload";
+import {storage} from "../firebase"
 
 const AddProduct = () => {
     const initialProductState = {
         title: "",
         description: "",
         price: "",
-        // imgUrl : "",
+        imgUrl : "",
         inStock: true
     };
-    const [product, setProduct] = useState(initialProductState);
-    // const [url, setURL] = useState("ImgUpload");
+    const [product, setProduct] = useState(initialProductState);  
+    const [file, setFile] = useState(null);
+    const [url, setURL] = useState("");
+  
+    function handleChange(e) {
+      setFile(e.target.files[0]);
+    }
+  
+    async function handleUpload(e) {
+      e.preventDefault();
+      const ref = storage.ref(`/images/${file.name}`);
+      const uploadTask =  ref.put(file);
+      uploadTask.on("state_changed", console.log, console.error, () => {
+        ref
+          .getDownloadURL()
+          .then((url) => {
+            setFile(null);
+            setURL(url);
+          });
+      });
+      return url
+    }
 
   const handleInputChange = event => {
     const { name, value } = event.target;
@@ -23,20 +43,21 @@ const AddProduct = () => {
       title: product.title,
       description: product.description,
       price: product.price,
-      // imgUrl : product.imgUrl,
+      imgUrl : url,
       inStock: true
     };
-
+    console.log('image url', data.imgUrl)
     FetchProduct.create(data)
-      .then(() => {
-        setProduct(initialProductState);
-      })
-      .then(() => {
-        alert('Product Added to Inventory !')
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    .then(() => {
+      setProduct(initialProductState);
+    })
+    .then(() => {
+      alert('Product Added to Inventory !')
+    })
+    .catch(e => {
+      console.log(e);
+    });
+    console.log('json data', JSON.stringify(data))
   }
 
   return (
@@ -82,9 +103,20 @@ const AddProduct = () => {
               />
             </div>
             <div className="form-group">
-              <ImgUpload />
+              <form onSubmit={handleUpload}>
+                <img style= {{height: 40, wdth: 40}} src={url} alt="" />
+                <input
+                  className="form-control"
+                  id="image"
+                  required
+                  type="file"
+                  onChange={handleChange}
+                  name="image"
+                  />
+                  <button disabled={!file}>Upload</button>
+                </form>
             </div>
-            <button onClick={saveProduct} className="btn btn-success">
+            <button disable={!product} onClick={saveProduct} className="btn btn-success">
               Add
             </button>
       </div>

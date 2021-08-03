@@ -15,13 +15,14 @@ const ProductsList = () => {
   };
 
   const setActiveProduct = (product, index) => {
-    const { title, description, price, inStock } = product.data();
+    const { title, description, price, imgUrl, inStock } = product.data();
 
     setCurrentProduct({
       id: product.id,
       title,
       description,
       price,
+      imgUrl,
       inStock,
     });
 
